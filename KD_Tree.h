@@ -23,8 +23,14 @@ private:
     }
 
     static bool getTypeOfOne(std::string &StringToAnalyze){
+        int numpoints = 0;
+        int itr = 0;
         for(auto &i:StringToAnalyze){
-            if (!isDigit(i)) return false;
+            if (!isDigit(i) && i!='.' && i!='-') return false;
+            if(i=='-' && itr!=0)return false;
+            if(i=='.' && numpoints==1) return false;
+            else if (i =='.' && numpoints==0) ++numpoints;
+            ++itr;
         }
         return true;
     }
@@ -42,6 +48,18 @@ public:
     KD_Tree(){
         root = nullptr;
         dataTypes = nullptr;
+    }
+
+    void printDataTypes(){
+        if(!dataTypes){
+            std::cout << "No data loaded" << std::endl;
+            return;
+        }
+        for (int i = 0; i < dim; ++i) {
+            std::cout << dataTypes[i] << ' ';
+        }
+        std::cout << std::endl;
+        return;
     }
 
     void loadDataFromCSV(std::string pathToCSV){
@@ -64,7 +82,7 @@ public:
                 PosiblyDataTypes[i][j] = "number";
             }
         }
-        int ini = 0;
+        int ini = 1;
         for (int i = 0; i < numThreads; ++i) {
             MyThreads[i] = std::thread(&KD_Tree::getDataTypes,i,PosiblyDataTypes,ini,std::min(ini+rowsPerThread-1,(long)dataSet.size()-1),std::ref(dataSet));
             ini += rowsPerThread;
@@ -77,7 +95,6 @@ public:
                 if (PosiblyDataTypes[i][j] == "string" && dataTypes[j]!="string") dataTypes[j] = "string";
             }
         }
-
         for (int i = 0; i < numThreads; ++i) {
             delete[] PosiblyDataTypes[i];
         }
