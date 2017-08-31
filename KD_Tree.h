@@ -66,7 +66,6 @@ public:
         }
         int ini = 0;
         for (int i = 0; i < numThreads; ++i) {
-            std::cout << "Sure: " << " i: " <<i <<" ini: "<<ini <<std::endl;
             MyThreads[i] = std::thread(&KD_Tree::getDataTypes,i,PosiblyDataTypes,ini,std::min(ini+rowsPerThread-1,(long)dataSet.size()-1),std::ref(dataSet));
             ini += rowsPerThread;
         }
@@ -79,11 +78,6 @@ public:
             }
         }
 
-        for (int i = 0; i < dim; ++i) {
-            std::cout << dataTypes[i] << std::endl;
-        }
-
-        std::cout << std::endl;
         for (int i = 0; i < numThreads; ++i) {
             delete[] PosiblyDataTypes[i];
         }
