@@ -87,11 +87,12 @@ std::vector<std::string> CSVHandler::processString(std::string StringToProcess) 
     std::vector<std::string> processed;
     std::string stringToAdd = "";
     for (int i = 0; i < StringToProcess.length(); ++i) {
-        if (StringToProcess[i]==',' || i==StringToProcess.length()-1) {
+        if (StringToProcess[i]==',') {
             processed.push_back(stringToAdd);
             stringToAdd="";
         }
         else stringToAdd += StringToProcess[i];
+        if(i==StringToProcess.length()-1) {processed.push_back(stringToAdd);}
     }
     return processed;
 }
