@@ -50,6 +50,18 @@ public:
         if(pos < 0 || pos > dim -1 || dim == 0) return "NoData!";
         return Punto[pos];
     }
+    std::vector<std::string> getTypeOf() {
+        std::vector<std::string> ans;
+        for (int i = 0; i < dim; ++i) {
+            ans.push_back(typeOfData[i]);
+        }
+        return ans;
+    }
+    std::string getTypeOf(long pos){
+        if(pos < 0 || pos > dim -1 || dim == 0) return "NoDataType!";
+        return typeOfData[pos];
+    }
+
     ~KD_Node(){
         delete[] Punto;
     }
